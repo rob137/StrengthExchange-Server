@@ -4,3 +4,4 @@ seed.json
 mongo-notes.txt
 seed-data.json
 .env
+.eslintrc.js
