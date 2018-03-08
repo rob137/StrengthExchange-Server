@@ -5,7 +5,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { CLIENT_ORIGIN } = require('./config');
+const { CLIENT_ORIGIN, DATABASE_URL } = require('./config');
 const index = require('./routes/index');
 const users = require('./routes/users');
 

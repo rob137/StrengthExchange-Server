@@ -1,2 +1,5 @@
 node_modules
 .eslintrc.js
+seed.json
+mongo-notes.txt
+seed-data.json
