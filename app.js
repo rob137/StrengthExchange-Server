@@ -42,7 +42,7 @@ let server;
 
 const runServer = (databaseUrl = DATABASE_URL, port = PORT) => {
   return new Promise((resolve, reject) => {
-    mongoose.connect(databaseUrl, { useMongoClient: true }, (err) => {
+    mongoose.connect(databaseUrl, (err) => {
       if (err) {
         return reject(err);
       }
@@ -69,6 +69,11 @@ const closeServer = () => {
       return resolve();
     });
   });
-};
+}; 
 
-module.exports = { app, runServer, closeServer };
+if (require.main === module) {
+  runServer().catch(err => console.error(err));
+}
+
+
+module.exports = { app};
