@@ -4,5 +4,5 @@ module.exports = {
     process.env.DATABASE_URL ||
     global.DATABASE_URL ||
     'mongodb://localhost/strength-app',
-  PORT: process.env.PORT || 5000,
+  PORT: process.env.PORT || 5001,
 };
