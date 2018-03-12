@@ -32,11 +32,45 @@ app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
+
+/* 
+const connectToDb = connArg => new Promise((resolve, reject) => {
+  mongoose.connect(connArg, (err) => {
+    if (err) reject(err);
+  });
+});
+
+const logPort = (port) => {
+  console.log(`The server is listening on port ${port}`);
+};
+
+const listenToServer = (port) => {
+  return new Promise((resolve, reject) => {
+    app.listen(port, () => {
+      resolve();
+    })
+      .on('error', reject);
+  })
+    .then(logPort(port));
+};
+
+const runServer = async (databaseUrl, port) => {
+  try {
+    await connectToDb(databaseUrl);
+    await listenToServer(port);
+  } catch (err) {
+    mongoose.disconnect();
+    throw err;
+  }
+}; 
+runServer(DATABASE_URL, PORT).catch(err => console.log(`error: ${err}`));
+
+*/
+
 
 let server;
 
@@ -70,10 +104,9 @@ const closeServer = () => {
     });
   });
 }; 
-
+ 
 if (require.main === module) {
   runServer().catch(err => console.error(err));
 }
-
 
 module.exports = { app, runServer, closeServer };
