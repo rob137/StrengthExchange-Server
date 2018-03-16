@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { ProgramData } = require('../models');
+const { UserData, ProgramData } = require('../models');
 
 /* GET programs listing. */
 router.get('/', (req, res) => {
-  ProgramData
+  UserData
     .find()
-    .then((programData) => {
+    .then((userData) => {
       res.status(200).json({
-        programData: programData.map(program => program.serialize()),
+        programData: userData.map(user => user.programs.serialize()),
       });
     })
     .catch((err) => {
