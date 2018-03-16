@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const programDataSchema = mongoose.Schema({
   programName: { type: String, required: true },
   summary: { type: String },
-  version: { type: Number, required: true },
+  dateLastUpdated: { type: String, required: true },
   workouts: [{
     day: { type: Number, required: true },
     exercises: [
@@ -37,7 +37,7 @@ programDataSchema.methods.serialize = function programDataSchema() {
     id: this.id,
     programName: this.programName,
     summary: this.summary,
-    version: this.version,
+    dateLastUpdated: this.dateLastUpdated,
     workouts: this.workouts,
   };
 };
