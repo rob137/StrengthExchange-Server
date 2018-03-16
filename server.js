@@ -105,8 +105,8 @@ const closeServer = () => {
       return resolve();
     });
   });
-}; 
- 
+};
+
 if (require.main === module) {
   runServer().catch(err => console.error(err));
 }
