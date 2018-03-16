@@ -9,7 +9,6 @@ const programDataSchema = mongoose.Schema({
     exercises: [
       {
         exercise: { type: String, required: true },
-        weight: { type: Number },
         reps: { type: Number },
         sets: { type: Number },
         comments: { type: String },
