@@ -26,7 +26,6 @@ userDataSchema.methods.serialize = function userDataSchema() {
   return {
     id: this.id,
     name: this.name,
-    email: this.email,
     programs: this.programs,
   };
 };
