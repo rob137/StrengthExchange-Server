@@ -1,26 +1,29 @@
 const mongoose = require('mongoose');
 
+const programDataSchema = mongoose.Schema({
+  programName: { type: String, required: true },
+  summary: { type: String },
+  version: { type: Number, required: true },
+  workouts: [{
+    day: { type: Number, required: true },
+    exercises: [
+      {
+        exercise: { type: String, required: true },
+        weight: { type: Number },
+        reps: { type: Number },
+        sets: { type: Number },
+        comments: { type: String },
+      },
+    ],
+  }],
+});
+
 const userDataSchema = mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
-  programs: [{
-    programName: { type: String, required: true },
-    summary: { type: String },
-    version: { type: Number, required: true },
-    workouts: [{
-      day: { type: Number, required: true },
-      exercises: [
-        {
-          exercise: { type: String, required: true },
-          weight: { type: Number },
-          reps: { type: Number },
-          sets: { type: Number },
-          comments: { type: String },
-        },
-      ],
-    }],
-  }],
+  programs: programDataSchema,
 }, { collection: 'users' });
+
 
 userDataSchema.methods.serialize = function userDataSchema() {
   return {
@@ -30,6 +33,17 @@ userDataSchema.methods.serialize = function userDataSchema() {
   };
 };
 
-const UserData = mongoose.model('UserData', userDataSchema);
+programDataSchema.methods.serialize = function programDataSchema() {
+  return {
+    id: this.id,
+    programName: this.programName,
+    summary: this.summary,
+    version: this.version,
+    workouts: this.workouts,
+  };
+};
 
-module.exports = { UserData };
+const UserData = mongoose.model('UserData', userDataSchema);
+const ProgramData = mongoose.model('ProgramData', programDataSchema);
+
+module.exports = { UserData, ProgramData };
