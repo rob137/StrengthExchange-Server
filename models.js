@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const userDataSchema = mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
-  data: [{
+  programs: [{
     programName: { type: String, required: true },
     summary: { type: String },
     version: { type: Number, required: true },
@@ -27,7 +27,7 @@ userDataSchema.methods.serialize = function userDataSchema() {
     id: this.id,
     name: this.name,
     email: this.email,
-    data: this.data,
+    programs: this.programs,
   };
 };
 
