@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { UserData } = require('../models');
+const { User } = require('../models');
 
 /* GET users listing. */
 router.get('/', (req, res) => {
-  UserData
+  User
     .find()
-    .then((userData) => {
+    .then((user) => {
       res.status(200).json({
-        userData: userData.map(user => user.serialize()),
+        user: user.map(user => user.serialize()),
       });
     })
     .catch((err) => {
