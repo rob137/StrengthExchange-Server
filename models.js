@@ -37,8 +37,6 @@ programsSchema.methods.serialize = function programsSchema() {
     id: this.id,
     programName: this.programName,
     summary: this.summary,
-    dateLastUpdated: this.dateLastUpdated,
-    workouts: this.workouts,
   };
 };
 
