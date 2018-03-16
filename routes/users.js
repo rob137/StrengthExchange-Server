@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
   UserData
     .find()
     .then((userData) => {
-      res.json({
+      res.status(200).json({
         userData: userData.map(user => user.serialize()),
       });
     })
