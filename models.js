@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const programSchema = mongoose.Schema({
+const programsSchema = mongoose.Schema({
   programName: { type: String, required: true },
   summary: { type: String },
   dateLastUpdated: { type: String, required: true },
@@ -17,14 +17,14 @@ const programSchema = mongoose.Schema({
   }],
 });
 
-const userSchema = mongoose.Schema({
+const usersSchema = mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
-  programs: programSchema,
+  programs: programsSchema,
 }, { collection: 'users' });
 
 
-userSchema.methods.serialize = function userSchema() {
+usersSchema.methods.serialize = function usersSchema() {
   return {
     id: this.id,
     name: this.name,
@@ -32,7 +32,7 @@ userSchema.methods.serialize = function userSchema() {
   };
 };
 
-programSchema.methods.serialize = function programSchema() {
+programsSchema.methods.serialize = function programsSchema() {
   return {
     id: this.id,
     programName: this.programName,
@@ -42,7 +42,7 @@ programSchema.methods.serialize = function programSchema() {
   };
 };
 
-const User = mongoose.model('User', userSchema);
-const Program = mongoose.model('Program', programSchema);
+const Users = mongoose.model('Users', usersSchema);
+const Programs = mongoose.model('Programs', programsSchema);
 
-module.exports = { User, Program };
+module.exports = { Users, Programs };
