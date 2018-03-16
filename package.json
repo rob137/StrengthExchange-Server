@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon app.js --exec babel-node",
+    "start": "nodemon server.js --exec babel-node",
     "test": "jest --runInBand"
   },
   "dependencies": {
