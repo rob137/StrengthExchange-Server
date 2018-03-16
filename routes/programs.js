@@ -17,4 +17,14 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:serial', (req, res) => {
+  Users
+    .find()
+    .then((users) => {
+      const programs = users.map(user => user.programs);
+      const program = programs.filter(prog => prog.serial === Number(req.params.serial));
+      res.status(200).json( {program} );
+    })
+})
+
 module.exports = router;

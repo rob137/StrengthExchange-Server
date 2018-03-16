@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const programsSchema = mongoose.Schema({
   programName: { type: String, required: true },
+  serial: { type: Number, required: true },
   summary: { type: String },
   dateLastUpdated: { type: String, required: true },
   workouts: [{
@@ -34,7 +35,7 @@ usersSchema.methods.serialize = function usersSchema() {
 
 programsSchema.methods.serialize = function programsSchema() {
   return {
-    id: this.id,
+    serial: this.serial,
     programName: this.programName,
     summary: this.summary,
   };
