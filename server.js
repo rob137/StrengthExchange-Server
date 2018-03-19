@@ -7,6 +7,7 @@ const { CLIENT_ORIGIN, DATABASE_URL, PORT } = require('./config');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const programs = require('./routes/programs');
+const days = require('./routes/days');
 
 const app = express();
 
@@ -18,7 +19,8 @@ app.use(express.static('public'));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/programs', programs)
+app.use('/programs', programs);
+app.use('/days', days);
 
 app.use(cors({ origin: CLIENT_ORIGIN }));
 

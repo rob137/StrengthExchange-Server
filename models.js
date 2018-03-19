@@ -1,47 +1,58 @@
 const mongoose = require('mongoose');
 
-const programsSchema = mongoose.Schema({
-  programName: { type: String, required: true },
-  serial: { type: Number, required: true },
-  summary: { type: String },
-  dateLastUpdated: { type: String, required: true },
-  workouts: [{
-    day: { type: Number, required: true },
-    exercises: [
-      {
-        exercise: { type: String, required: true },
-        reps: { type: Number },
-        sets: { type: Number },
-        comments: { type: String },
-      },
-    ],
-  }],
-});
-
 const usersSchema = mongoose.Schema({
+  type: { type: String, required: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
-  programs: programsSchema,
-}, { collection: 'users' });
+}, { type: 'user' });
 
+const programsSchema = mongoose.Schema({
+  type: { type: String, required: true },
+  name: { type: String, required: true },
+  userId: { type: String, required: true },
+  summary: { type: String, required: true },
+  dateLastUpdated: { type: Date, required: true },
+}, { type: 'program' });
+
+const daysSchema = mongoose.Schema({
+  type: { type: String, required: true },
+  dayType: { type: String, required: true },
+  dayNumber: { type: Number, required: true },
+  programId: { type: String, required: true },
+  exercises: { type: Array }
+}, { type: 'day' });
 
 usersSchema.methods.serialize = function usersSchema() {
   return {
     id: this.id,
     name: this.name,
-    programs: this.programs,
   };
 };
 
 programsSchema.methods.serialize = function programsSchema() {
   return {
-    serial: this.serial,
-    programName: this.programName,
+    id: this.id,
+    type: this.type,
+    name: this.name,
+    userId: this.userId,
     summary: this.summary,
-  };
-};
+    dateLastUpdated: this.dateLastUpdated,
+  }
+}
 
-const Users = mongoose.model('Users', usersSchema);
-const Programs = mongoose.model('Programs', programsSchema);
+daysSchema.methods.serialize = function daysSchema() {
+  return {
+    _id: this.id,
+    type: this.type,
+    dayType: this.dayType,
+    userId: this.userId,
+    day: this.day,
+    programId: this.programId,
+    exercises: this.exercises,
+  }
+}
 
-module.exports = { Users, Programs };
+const Users = mongoose.model('User', usersSchema, 'users');
+const Programs = mongoose.model('Program', programsSchema, 'programs');
+const Days = mongoose.model('Day', daysSchema, 'days');
+module.exports = { Users, Programs, Days };

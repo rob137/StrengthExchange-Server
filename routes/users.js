@@ -5,7 +5,7 @@ const { Users } = require('../models');
 /* GET users listing. */
 router.get('/', (req, res) => {
   Users
-    .find()
+    .find({ type: 'user' })
     .then((users) => {
       res.status(200).json({
         users: users.map(user => user.serialize()),

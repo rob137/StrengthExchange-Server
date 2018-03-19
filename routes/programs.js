@@ -4,11 +4,11 @@ const { Users, Programs } = require('../models');
 
 /* GET programs. */
 router.get('/', (req, res) => {
-  Users
+  Programs
     .find()
-    .then((users) => {
+    .then((programs) => {
       res.status(200).json({
-        programs: users.map(user => user.programs.serialize()),
+        programs: programs.map(program => program.serialize()),
       });
     })
     .catch((err) => {
@@ -17,14 +17,36 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:serial', (req, res) => {
-  Users
+/* GET by program id. */
+router.get('/:programId', (req, res) => {
+  Programs
     .find()
-    .then((users) => {
-      const programs = users.map(user => user.programs);
-      const program = programs.filter(prog => prog.serial === Number(req.params.serial));
-      res.status(200).json( {program} );
+    .then((programs) => {
+      const program = programs.filter(prog => prog.id === req.params.programId);
+      if (program.length === 0) {
+        res.status(404).json({ 
+          message: 'Program not found - check the id is correct.',
+        });
+      }
+      res.status(200).json({ program });
     })
-})
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+});
+
+/* GET all programs associated with user id. */
+router.get('/user/:userId', (req, res) => {
+  Programs
+    .find({ userId: req.params.userId })
+    .then((programs) => {
+      res.status(200).json({ programs });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+});
 
 module.exports = router;
