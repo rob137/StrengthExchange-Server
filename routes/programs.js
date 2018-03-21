@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Users, Programs } = require('../models');
+const { Programs, Days } = require('../models');
+const cors = require('cors');
 
 /* GET programs. */
 router.get('/', (req, res) => {
@@ -17,7 +18,7 @@ router.get('/', (req, res) => {
     });
 });
 
-/* GET by program id. */
+/* GET by program id, including workouts. */
 router.get('/:programId', (req, res) => {
   Programs
     .find()
@@ -48,5 +49,31 @@ router.get('/user/:userId', (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     });
 });
+
+/* POST new program */
+router.post('/', (req, res) => {
+  // 'name' is a required field.
+  console.log(req.body);
+  if (!('name' in req.body) || req.body.name.length === 0) {
+    const message = 'missing name in request body';
+    console.error(message);
+    return res.status(400).send(message);
+  }
+  Programs
+    .create({
+      name: req.body.name,
+      summary: req.body.summary,
+      dateLastUpdated: new Date().toJSON(),
+      type: 'program',
+      
+    })
+    .then(console.log('Creating new program...'))
+    .then(program => res.status(201).json(program.serialize()))
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error '});
+    });
+});
+
 
 module.exports = router;

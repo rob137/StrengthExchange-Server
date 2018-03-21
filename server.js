@@ -17,12 +17,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
+app.use(cors({ origin: CLIENT_ORIGIN }));
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/programs', programs);
 app.use('/days', days);
-
-app.use(cors({ origin: CLIENT_ORIGIN }));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -74,7 +74,6 @@ const runServer = async (databaseUrl, port) => {
 runServer(DATABASE_URL, PORT).catch(err => console.log(`error: ${err}`));
 
 */
-
 
 let server;
 

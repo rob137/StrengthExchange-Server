@@ -1,5 +1,8 @@
 module.exports = {
-  CLIENT_ORIGIN: process.env.CLIENT_ORIGIN || 'http://pedantic-wing-525a95.netlify.com/', // 'http://localhost:3000'
+  CLIENT_ORIGIN: 
+    process.env.CLIENT_ORIGIN || 
+    'http://localhost:3000' || 
+    'http://pedantic-wing-525a95.netlify.com/',
   DATABASE_URL:
     process.env.DATABASE_URL ||
     global.DATABASE_URL ||

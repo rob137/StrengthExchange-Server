@@ -10,8 +10,9 @@ const programsSchema = mongoose.Schema({
   type: { type: String, required: true },
   name: { type: String, required: true },
   userId: { type: String, required: true },
-  summary: { type: String, required: true },
+  summary: { type: String },
   dateLastUpdated: { type: Date, required: true },
+  days: { type: Array },
 }, { type: 'program' });
 
 const daysSchema = mongoose.Schema({
@@ -37,6 +38,7 @@ programsSchema.methods.serialize = function programsSchema() {
     userId: this.userId,
     summary: this.summary,
     dateLastUpdated: this.dateLastUpdated,
+    days: this.days,
   }
 }
 
