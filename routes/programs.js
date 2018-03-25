@@ -52,27 +52,38 @@ router.get('/user/:userId', (req, res) => {
 
 /* POST new program */
 router.post('/', (req, res) => {
-  // 'name' is a required field.
-  console.log(req.body);
-  if (!('name' in req.body) || req.body.name.length === 0) {
-    const message = 'missing name in request body';
-    console.error(message);
-    return res.status(400).send(message);
-  }
+  const requiredFields = ['name', 'userId']
+  requiredFields.forEach((requiredField) => {
+    if (!(requiredField in req.body)) {
+      const message = `missing ${requiredField} in request body`;
+      console.error(message);
+      return res.status(400).send(message);
+    }
+    return false;
+  });
   Programs
     .create({
       name: req.body.name,
+      userId: req.body.userId,
       summary: req.body.summary,
       dateLastUpdated: new Date().toJSON(),
       type: 'program',
-      
     })
     .then(console.log('Creating new program...'))
     .then(program => res.status(201).json(program.serialize()))
     .catch((err) => {
       console.error(err);
-      res.status(500).json({ message: 'Internal server error '});
+      res.status(500).json({ message: 'Internal server error' });
     });
+});
+
+/* Delete a program */
+router.delete('/:id', (req, res) => {
+  Programs
+    .findByIdAndRemove(req.params.id)
+    .then(console.log('Deleting a workout program'))
+    .then(() => res.status(204).end())
+    .catch(() => res.status(500).json({ message: 'Internal server error' }));
 });
 
 
