@@ -21,10 +21,9 @@ router.get('/', (req, res) => {
 /* GET by program id, including workouts. */
 router.get('/:programId', (req, res) => {
   Programs
-    .find()
-    .then((programs) => {
-      const program = programs.filter(prog => prog.id === req.params.programId);
-      if (program.length === 0) {
+    .findById(req.params.programId)
+    .then((program) => {
+      if (program === null) {
         res.status(404).json({ 
           message: 'Program not found - check the id is correct.',
         });
@@ -82,7 +81,7 @@ router.delete('/:id', (req, res) => {
   Programs
     .findByIdAndRemove(req.params.id)
     .then(console.log('Deleting a workout program'))
-    .then(() => res.status(204).end())
+    .then(() => res.status(200).end())
     .catch(() => res.status(500).json({ message: 'Internal server error' }));
 });
 
