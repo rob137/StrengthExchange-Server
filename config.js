@@ -11,7 +11,7 @@ module.exports = {
     process.env.TEST_DATABASE_URL ||
     global.DATABASE_URL ||
     'mongodb://localhost/test-strength-app',
-  PORT: process.env.PORT || 5003,
+  PORT: process.env.PORT || 5000,
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRY: process.env.JWT_EXPIRY || '7d',
 };
