@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const UserSchema = mongoose.Schema({
-  username: {
+  email: {
     type: String,
-    require: true,
+    required: true,
     unique: true,
   },
   password: {
@@ -17,11 +17,13 @@ const UserSchema = mongoose.Schema({
   lastName: { type: String, default: '' },
 });
 
-UserSchema.methods.serialize = () => ({
-  username: this.username || '',
-  firstName: this.firstName || '',
-  lastName: this.lastName || '',
-});
+UserSchema.methods.serialize = function() {
+  return {
+    email: this.email || '',
+    firstName: this.firstName || '',
+    lastName: this.lastName || '',
+  }
+};
 
 UserSchema.methods.validatePassword = password => bcrypt.compare(password, this.password);
 

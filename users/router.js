@@ -9,7 +9,7 @@ const jsonParser = bodyParser.json();
 
 // Post to register a new user
 router.post('/', jsonParser, (req, res) => {
-  const requiredFields = ['username', 'password'];
+  const requiredFields = ['email', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
   if (missingField) {
@@ -21,7 +21,7 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  const stringFields = ['username', 'password', 'firstName', 'lastName'];
+  const stringFields = ['email', 'password', 'firstName', 'lastName'];
   const nonStringField = stringFields
     .find(field => field in req.body && typeof req.body[field] !== 'string');
 
@@ -34,7 +34,7 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  const explicitlyTrimmedFields = ['username', 'password'];
+  const explicitlyTrimmedFields = ['email', 'password'];
   const nonTrimmedField = explicitlyTrimmedFields
     .find(field => req.body[field].trim() !== req.body[field]);
 
@@ -48,12 +48,12 @@ router.post('/', jsonParser, (req, res) => {
   }
 
   const sizedFields = {
-    username: {
+    email: {
       min: 1,
     },
     password: {
       min: 7,
-      max: 36,
+      max: 72,
     },
   };
   const tooSmallField = Object.keys(sizedFields)
@@ -78,26 +78,26 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   let { firstName = '', lastName = '' } = req.body;
   firstName = firstName.trim();
   lastName = lastName.trim();
 
-  return User.find({ username })
+  return User.find({ email })
     .count()
     .then((count) => {
       if (count > 0) {
         return Promise.reject({
           code: 422,
           reason: 'ValidationError',
-          message: 'Username already taken',
-          location: 'username',
+          message: 'Email already taken',
+          location: 'email',
         });
       }
       return User.hashPassword(password);
     })
     .then(hash => User.create({
-      username,
+      email,
       password: hash,
       firstName,
       lastName,
