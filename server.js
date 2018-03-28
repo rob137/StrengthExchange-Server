@@ -1,13 +1,17 @@
 const express = require('express');
+require('dotenv').config();
 const Morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { CLIENT_ORIGIN, DATABASE_URL, PORT } = require('./config');
-const index = require('./routes/index');
-const users = require('./routes/users');
-const programs = require('./routes/programs');
-const days = require('./routes/days');
+const indexRouter = require('./routes/index');
+const programsRouter = require('./routes/programs');
+const daysRouter = require('./routes/days');
+const passport = require('passport');
+const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
+const { router: usersRouter } = require('./users');
+// const usersRouter = require('./users/router');
 
 const app = express();
 
@@ -19,10 +23,20 @@ app.use(express.static('public'));
 
 app.use(cors({ origin: CLIENT_ORIGIN }));
 
-app.use('/', index);
-app.use('/users', users);
-app.use('/programs', programs);
-app.use('/days', days);
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/programs', programsRouter);
+app.use('/days', daysRouter);
+app.use('/auth', authRouter);
+
+const jwtAuth = passport.authenticate('jwt', { session: false });
+
+app.get('/api/protected', jwtAuth, (req, res) => res.json({
+  data: 'rosebud',
+}));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -40,40 +54,6 @@ app.use((err, req, res) => {
   res.status(err.status || 500);
   res.render('error');
 });
-
-/* 
-const connectToDb = connArg => new Promise((resolve, reject) => {
-  mongoose.connect(connArg, (err) => {
-    if (err) reject(err);
-  });
-});
-
-const logPort = (port) => {
-  console.log(`The server is listening on port ${port}`);
-};
-
-const listenToServer = (port) => {
-  return new Promise((resolve, reject) => {
-    app.listen(port, () => {
-      resolve();
-    })
-      .on('error', reject);
-  })
-    .then(logPort(port));
-};
-
-const runServer = async (databaseUrl, port) => {
-  try {
-    await connectToDb(databaseUrl);
-    await listenToServer(port);
-  } catch (err) {
-    mongoose.disconnect();
-    throw err;
-  }
-}; 
-runServer(DATABASE_URL, PORT).catch(err => console.log(`error: ${err}`));
-
-*/
 
 let server;
 

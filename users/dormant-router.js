@@ -17,4 +17,14 @@ router.get('/', (req, res) => {
     });
 });
 
+/* POST new user on registration. */
+router.post('/', (req, res) => {
+  Users
+    .create({})
+    .then()
+    .catch((err) => {
+      console.error(err);
+    });
+});
+
 module.exports = router;

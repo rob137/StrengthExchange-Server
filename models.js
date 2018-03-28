@@ -54,7 +54,7 @@ daysSchema.methods.serialize = function daysSchema() {
   }
 }
 
-const Users = mongoose.model('User', usersSchema, 'users');
+const Users = mongoose.model('Users', usersSchema, 'users');
 const Programs = mongoose.model('Program', programsSchema, 'programs');
 const Days = mongoose.model('Day', daysSchema, 'days');
 module.exports = { Users, Programs, Days };
